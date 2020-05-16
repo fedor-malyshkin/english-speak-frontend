@@ -71,3 +71,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ## Heroku run
 Port will be read from PORT environment variable,
 but backed should be specified in REACT_APP_BACKEND_URL
+
+### Heroku data
+`https://powerful-garden-16023.herokuapp.com/ | https://git.heroku.com/powerful-garden-16023.git`
