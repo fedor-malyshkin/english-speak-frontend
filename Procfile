@@ -1,1 +1,1 @@
-web: npm run start  --scripts-prepend-node-path=auto
+web: npm run start
