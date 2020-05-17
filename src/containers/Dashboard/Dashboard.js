@@ -10,6 +10,7 @@ const Dashboard = (props) => {
     const [dataPhrasalVerbs, updatePhrasalVerbsData] = useState([]);
     const [dataVocabulary, updateVocabularyData] = useState([]);
     const [dataGeneralVocabulary, updateGeneralVocabularyData] = useState([]);
+    const [dataExpressions, updateExpressionsData] = useState([]);
 
     function requestNewData() {
         axios.get("/murphy")
@@ -20,6 +21,8 @@ const Dashboard = (props) => {
             .then(response => updatePhrasalVerbsData(response.data));
         axios.get("/general_vocabulary")
             .then(response => updateGeneralVocabularyData(response.data));
+        axios.get("/expressions")
+            .then(response => updateExpressionsData(response.data));
         axios.get("/topic")
             .then(response => {
                 const value = response.data[0].name
@@ -35,6 +38,7 @@ const Dashboard = (props) => {
     const phrasalVerbs = <EntriesList data={dataPhrasalVerbs} format_url="true"/>
     const vocabulary = <EntriesList data={dataVocabulary} format_url="true"/>
     const generalVocabulary = <EntriesList data={dataGeneralVocabulary} format_url="true"/>
+    const expressions = <EntriesList data={dataExpressions}/>
 
     return (
         <div className="Dashboard">
@@ -48,6 +52,7 @@ const Dashboard = (props) => {
                 <div id="topic">Topic: {currentTopic}</div>
                 <div id="vocabulary">{vocabulary}</div>
                 <div id="general_vocabulary">{generalVocabulary}</div>
+                <div id="expressions">{expressions}</div>
             </div>
         </div>
     );
