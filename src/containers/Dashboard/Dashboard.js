@@ -4,55 +4,118 @@ import EntriesList from "../../components/EntriesList/EntriesList";
 import axios from 'axios';
 
 const Dashboard = (props) => {
-    const [currentTopic, updateCurrentTopic] = useState("");
+    const [currentTopicQ1, updateCurrentTopicQ1] = useState("");
+    const [currentTopicQ23, updateCurrentTopicQ23] = useState("");
     const [dataMurphy, updateMurphyData] = useState([]);
     const [dataGrammar, updateGrammarData] = useState([]);
     const [dataPhrasalVerbs, updatePhrasalVerbsData] = useState([]);
-    const [dataVocabulary, updateVocabularyData] = useState([]);
-    const [dataGeneralVocabulary, updateGeneralVocabularyData] = useState([]);
+    const [dataTopicQ1Questions, updateTopicQ1QuestionsData] = useState([]);
+    const [dataTopicQ1Vocabulary, updateTopicQ1VocabularyData] = useState([]);
+    const [dataTopicQ23Questions, updateTopicQ23QuestionsData] = useState([]);
+    const [dataTopicQ23Vocabulary, updateTopicQ23VocabularyData] = useState([]);
     const [dataExpressions, updateExpressionsData] = useState([]);
 
-    function requestNewData() {
+    function reloadMurphy() {
         axios.get("/murphy")
             .then(response => updateMurphyData(response.data));
+    }
+
+    function reloadGrammar() {
         axios.get("/grammar")
             .then(response => updateGrammarData(response.data));
+    }
+
+    function reloadPhrasalVerbs() {
         axios.get("/phrasal_verbs")
             .then(response => updatePhrasalVerbsData(response.data));
-        axios.get("/general_vocabulary")
-            .then(response => updateGeneralVocabularyData(response.data));
+    }
+
+    function reloadExpressions() {
         axios.get("/expressions")
             .then(response => updateExpressionsData(response.data));
-        axios.get("/topic")
+    }
+
+    function reloadTopicQ1() {
+        axios.get("/topics_q1/random")
             .then(response => {
                 const value = response.data[0].name
-                updateCurrentTopic(value)
-                return axios.get(`/vocabulary/${value}`)
+                updateCurrentTopicQ1(value)
+                return axios.get(`/topics_q1/${value}`)
             })
-            .then(response => updateVocabularyData(response.data));
+            .then(response => updateTopicQ1QuestionsData(response.data))
+            .then(_ => axios.get(`/topics_q1/${currentTopicQ1}/vocabulary`))
+            .then(response => updateTopicQ1VocabularyData(response.data));
+    }
+
+    function reloadTopicQ23() {
+        axios.get("/topics_q23/random")
+            .then(response => {
+                const value = response.data[0].name
+                updateCurrentTopicQ23(value)
+                return axios.get(`/topics_q23/${value}`)
+            })
+            .then(response => updateTopicQ23QuestionsData(response.data))
+            .then(_ => axios.get(`/topics_q23/${currentTopicQ23}/vocabulary`))
+            .then(response => updateTopicQ23VocabularyData(response.data));
+    }
+
+    function requestNewData() {
+        reloadMurphy();
+        reloadGrammar();
+        reloadPhrasalVerbs();
+        reloadExpressions();
+        reloadTopicQ1();
+        reloadTopicQ23();
     }
 
     const refreshButton = <button onClick={() => requestNewData()}>Refresh</button>
     const murphy = <EntriesList data={dataMurphy}/>
     const grammar = <EntriesList data={dataGrammar}/>
-    const phrasalVerbs = <EntriesList data={dataPhrasalVerbs} format_url="true"/>
-    const vocabulary = <EntriesList data={dataVocabulary} format_url="true"/>
-    const generalVocabulary = <EntriesList data={dataGeneralVocabulary} format_url="true"/>
+    const phrasalVerbs = <EntriesList data={dataPhrasalVerbs} formatUrl="true"/>
+    const topicQ1Questions = <EntriesList data={dataTopicQ1Questions}/>
+    const topicQ1Vocabulary = <EntriesList data={dataTopicQ1Vocabulary}/>
+    const topicQ23Questions = <EntriesList data={dataTopicQ23Questions}/>
+    const topicQ23Vocabulary = <EntriesList data={dataTopicQ23Vocabulary}/>
     const expressions = <EntriesList data={dataExpressions}/>
 
     return (
         <div className="Dashboard">
             <div id="col1">
-                <div id="refresh">{refreshButton}</div>
-                <div id="grammar">{grammar}</div>
-                <div id="phrasal_verbs">{phrasalVerbs}</div>
+                <div id="refresh">
+                    {refreshButton}
+                </div>
+                <div id="grammar">
+                    <p onClick={() => reloadGrammar()}>General grammar</p>
+                    {grammar}</div>
+                <div id="murphy">
+                    <p onClick={() => reloadMurphy()}>Murphy's grammar</p>
+                    {murphy}</div>
+                <div id="phrasal_verbs">
+                    <p onClick={() => reloadPhrasalVerbs()}>Phrasal verbs</p>
+                    {phrasalVerbs}</div>
+                <div id="expressions">
+                    <p onClick={() => reloadExpressions()}>Expressions (idioms, linking words, etc)</p>
+                    {expressions}</div>
             </div>
             <div id="col2">
-                <div id="murphy">{murphy}</div>
-                <div id="topic">Topic: {currentTopic}</div>
-                <div id="vocabulary">{vocabulary}</div>
-                <div id="general_vocabulary">{generalVocabulary}</div>
-                <div id="expressions">{expressions}</div>
+                <div id="topic_q1">
+                    <p onClick={() => reloadTopicQ1()}>IELTS topic 1 suggestion</p>
+                    {currentTopicQ1}</div>
+                <div id="topic_q1_questions">
+                    <p>IELTS topic 1 questions</p>
+                    {topicQ1Questions}</div>
+                <div id="topic_q1_vocabulary">
+                    <p>IELTS topic 1 vocabulary</p>
+                    {topicQ1Vocabulary}</div>
+                <div id="topic_q23">
+                    <p onClick={() => reloadTopicQ23()}>IELTS topic 2, 3 suggestion</p>
+                    {currentTopicQ23}</div>
+                <div id="topic_q23_questions">
+                    <p>IELTS topic 2, 3 questions</p>
+                    {topicQ23Questions}</div>
+                <div id="topic_q23_vocabulary">
+                    <p>IELTS topic 2, 3 vocabulary</p>
+                    {topicQ23Vocabulary}</div>
             </div>
         </div>
     );
