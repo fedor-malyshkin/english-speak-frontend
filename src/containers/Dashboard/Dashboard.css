@@ -8,7 +8,12 @@
     width: 49%;
 }
 
-#grammar, #murphy, #phrasal_verbs, #topic, #vocabulary, #general_vocabulary, #expressions {
+.Dashboard p {
+    margin: 2px;
+    font-weight: bold;
+}
+
+#col1 > div, #col2 > div {
     border: 1px solid #bbb;
     padding: 10px;
 }
@@ -17,6 +22,6 @@ button {
     width: 100%;
 }
 
-#phrasal_verbs #element_name, #topic {
+#phrasal_verbs #element_name {
     font-weight: bold;
 }

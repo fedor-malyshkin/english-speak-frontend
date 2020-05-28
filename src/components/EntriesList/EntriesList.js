@@ -21,7 +21,7 @@ const EntriesList = (props) => {
             return (
                 <li key={index}>
                     <input type="checkbox" checked={checkboxEnabled} disabled={true}/>
-                    <Entry data={entry} formatUrl={props.format_url}
+                    <Entry data={entry} formatUrl={props.formatUrl}
                            clickHandler={(state) => updateCheckbox(state, index)}/>
                 </li>)
         });
