@@ -36,26 +36,38 @@ const Dashboard = (props) => {
     }
 
     function reloadTopicQ1() {
+        let topic = ""
         axios.get("/topics_q1/random")
             .then(response => {
                 const value = response.data[0].name
                 updateCurrentTopicQ1(value)
+                topic = value
                 return axios.get(`/topics_q1/${value}`)
             })
             .then(response => updateTopicQ1QuestionsData(response.data))
-            .then(_ => axios.get(`/topics_q1/${currentTopicQ1}/vocabulary`))
+            .then(_ => reloadTopicQ1Vocabulary(topic))
+    }
+
+    function reloadTopicQ1Vocabulary(topic) {
+        axios.get(`/topics_q1/${topic}/vocabulary`)
             .then(response => updateTopicQ1VocabularyData(response.data));
     }
 
     function reloadTopicQ23() {
+        let topic = ""
         axios.get("/topics_q23/random")
             .then(response => {
                 const value = response.data[0].name
                 updateCurrentTopicQ23(value)
+                topic = value
                 return axios.get(`/topics_q23/${value}`)
             })
             .then(response => updateTopicQ23QuestionsData(response.data))
-            .then(_ => axios.get(`/topics_q23/${currentTopicQ23}/vocabulary`))
+            .then(_ => reloadTopicQ23Vocabulary(topic))
+    }
+
+    function reloadTopicQ23Vocabulary(topic) {
+        axios.get(`/topics_q23/${topic}/vocabulary`)
             .then(response => updateTopicQ23VocabularyData(response.data));
     }
 
@@ -105,7 +117,7 @@ const Dashboard = (props) => {
                     <p>IELTS topic 1 questions</p>
                     {topicQ1Questions}</div>
                 <div id="topic_q1_vocabulary">
-                    <p>IELTS topic 1 vocabulary</p>
+                    <p onClick={() => reloadTopicQ1Vocabulary(currentTopicQ1)}>IELTS topic 1 vocabulary</p>
                     {topicQ1Vocabulary}</div>
                 <div id="topic_q23">
                     <p onClick={() => reloadTopicQ23()}>IELTS topic 2, 3 suggestion</p>
@@ -114,7 +126,7 @@ const Dashboard = (props) => {
                     <p>IELTS topic 2, 3 questions</p>
                     {topicQ23Questions}</div>
                 <div id="topic_q23_vocabulary">
-                    <p>IELTS topic 2, 3 vocabulary</p>
+                    <p onClick={() => reloadTopicQ23Vocabulary(currentTopicQ23)}>IELTS topic 2, 3 vocabulary</p>
                     {topicQ23Vocabulary}</div>
             </div>
         </div>
