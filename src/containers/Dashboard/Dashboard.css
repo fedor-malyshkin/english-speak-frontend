@@ -22,6 +22,6 @@ button {
     width: 100%;
 }
 
-#phrasal_verbs #element_name {
+#phrasal_verbs #element_name, #expressions #highlight {
     font-weight: bold;
 }

@@ -88,7 +88,7 @@ const Dashboard = (props) => {
     const topicQ1Vocabulary = <EntriesList data={dataTopicQ1Vocabulary}/>
     const topicQ23Questions = <EntriesList data={dataTopicQ23Questions}/>
     const topicQ23Vocabulary = <EntriesList data={dataTopicQ23Vocabulary}/>
-    const expressions = <EntriesList data={dataExpressions}/>
+    const expressions = <EntriesList data={dataExpressions} highlightAlgo="0"/>
 
     return (
         <div className="Dashboard">
