@@ -14,6 +14,7 @@ const Dashboard = (props) => {
     const [dataTopicQ23Questions, updateTopicQ23QuestionsData] = useState([]);
     const [dataTopicQ23Vocabulary, updateTopicQ23VocabularyData] = useState([]);
     const [dataExpressions, updateExpressionsData] = useState([]);
+    const [dataRandomWords, updateRandomWordsData] = useState([]);
 
     function reloadMurphy() {
         axios.get("/murphy")
@@ -71,6 +72,11 @@ const Dashboard = (props) => {
             .then(response => updateTopicQ23VocabularyData(response.data));
     }
 
+    function reloadRandomWords() {
+        axios.get("/random_words")
+            .then(response => updateRandomWordsData(response.data));
+    }
+
     function requestNewData() {
         reloadMurphy();
         reloadGrammar();
@@ -78,6 +84,7 @@ const Dashboard = (props) => {
         reloadExpressions();
         reloadTopicQ1();
         reloadTopicQ23();
+        reloadRandomWords();
     }
 
     const refreshButton = <button onClick={() => requestNewData()}>Refresh</button>
@@ -89,6 +96,7 @@ const Dashboard = (props) => {
     const topicQ23Questions = <EntriesList data={dataTopicQ23Questions}/>
     const topicQ23Vocabulary = <EntriesList data={dataTopicQ23Vocabulary}/>
     const expressions = <EntriesList data={dataExpressions} highlightAlgo="0"/>
+    const randomWords = <EntriesList data={dataRandomWords} highlightAlgo="0"/>
 
     return (
         <div className="Dashboard">
@@ -128,6 +136,9 @@ const Dashboard = (props) => {
                 <div id="topic_q23_vocabulary">
                     <p onClick={() => reloadTopicQ23Vocabulary(currentTopicQ23)}>IELTS topic 2, 3 vocabulary</p>
                     {topicQ23Vocabulary}</div>
+                <div id="random_words">
+                    <p onClick={() => reloadRandomWords()}>Random words/phrases</p>
+                    {randomWords}</div>
             </div>
         </div>
     );
