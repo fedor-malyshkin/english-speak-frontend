@@ -9,6 +9,7 @@ const Dashboard = (props) => {
     const [dataMurphy, updateMurphyData] = useState([]);
     const [dataGrammar, updateGrammarData] = useState([]);
     const [dataPhrasalVerbs, updatePhrasalVerbsData] = useState([]);
+    const [dataVerbsWithPrep, updateVerbsWithPrepData] = useState([]);
     const [dataTopicQ1Questions, updateTopicQ1QuestionsData] = useState([]);
     const [dataTopicQ1Vocabulary, updateTopicQ1VocabularyData] = useState([]);
     const [dataTopicQ23Questions, updateTopicQ23QuestionsData] = useState([]);
@@ -29,6 +30,11 @@ const Dashboard = (props) => {
     function reloadPhrasalVerbs() {
         axios.get("/phrasal_verbs")
             .then(response => updatePhrasalVerbsData(response.data));
+    }
+
+    function reloadVerbsWithPrep() {
+        axios.get("/verbs_with_prepositions")
+            .then(response => updateVerbsWithPrepData(response.data));
     }
 
     function reloadExpressions() {
@@ -81,6 +87,7 @@ const Dashboard = (props) => {
         reloadMurphy();
         reloadGrammar();
         reloadPhrasalVerbs();
+        reloadVerbsWithPrep();
         reloadExpressions();
         reloadTopicQ1();
         reloadTopicQ23();
@@ -91,6 +98,7 @@ const Dashboard = (props) => {
     const murphy = <EntriesList data={dataMurphy}/>
     const grammar = <EntriesList data={dataGrammar}/>
     const phrasalVerbs = <EntriesList data={dataPhrasalVerbs} formatUrl="true"/>
+    const verbsWithPrep = <EntriesList data={dataVerbsWithPrep}/>
     const topicQ1Questions = <EntriesList data={dataTopicQ1Questions}/>
     const topicQ1Vocabulary = <EntriesList data={dataTopicQ1Vocabulary}/>
     const topicQ23Questions = <EntriesList data={dataTopicQ23Questions}/>
@@ -139,6 +147,9 @@ const Dashboard = (props) => {
                 <div id="random_words">
                     <p onClick={() => reloadRandomWords()}>Random words/phrases</p>
                     {randomWords}</div>
+                <div id="verbs_with_preps">
+                    <p onClick={() => reloadVerbsWithPrep()}>Verbs with prepositions</p>
+                    {verbsWithPrep}</div>
             </div>
         </div>
     );
