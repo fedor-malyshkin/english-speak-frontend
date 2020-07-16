@@ -10,6 +10,7 @@ const Dashboard = (props) => {
     const [dataGrammar, updateGrammarData] = useState([]);
     const [dataPhrasalVerbs, updatePhrasalVerbsData] = useState([]);
     const [dataVerbsWithPrep, updateVerbsWithPrepData] = useState([]);
+    const [dataInterviewQuestions, updateInterviewQuestionsData] = useState([]);
     const [dataTopicQ1Questions, updateTopicQ1QuestionsData] = useState([]);
     const [dataTopicQ1Vocabulary, updateTopicQ1VocabularyData] = useState([]);
     const [dataTopicQ23Questions, updateTopicQ23QuestionsData] = useState([]);
@@ -40,6 +41,14 @@ const Dashboard = (props) => {
     function reloadExpressions() {
         axios.get("/expressions")
             .then(response => updateExpressionsData(response.data));
+    }
+
+    function reloadInterview() {
+        axios.get("/interview/random")
+            .then(response => {
+                const value = response.data
+                updateInterviewQuestionsData(value)
+            })
     }
 
     function reloadTopicQ1() {
@@ -92,6 +101,7 @@ const Dashboard = (props) => {
         reloadTopicQ1();
         reloadTopicQ23();
         reloadRandomWords();
+        reloadInterview();
     }
 
     const refreshButton = <button onClick={() => requestNewData()}>Refresh</button>
@@ -105,6 +115,7 @@ const Dashboard = (props) => {
     const topicQ23Vocabulary = <EntriesList data={dataTopicQ23Vocabulary}/>
     const expressions = <EntriesList data={dataExpressions} highlightAlgo="0"/>
     const randomWords = <EntriesList data={dataRandomWords} formatUrl="true"/>
+    const interviewQuestions = <EntriesList data={dataInterviewQuestions}/>
 
     return (
         <div className="Dashboard">
@@ -124,6 +135,9 @@ const Dashboard = (props) => {
                 <div id="expressions">
                     <p onClick={() => reloadExpressions()}>Expressions (idioms, linking words, etc)</p>
                     {expressions}</div>
+                <div id="interview">
+                    <p onClick={() => reloadInterview()}>Interview</p>
+                    {interviewQuestions}</div>
             </div>
             <div id="col2">
                 <div id="topic_q1">
