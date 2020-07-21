@@ -2,7 +2,10 @@ import React, {useState} from "react";
 import './Entry.css';
 
 function formatUrl(name) {
-    const nameNew = name.replace(' ', '-')
+    // "take * down +" -> "take-down"
+    const nameNew = name.replace(new RegExp(/[+*] ?/g), '')
+        .trim()
+        .replace(new RegExp(/ /g), '-')
     return `https://dictionary.cambridge.org/dictionary/english/${nameNew}`;
 }
 
@@ -39,7 +42,7 @@ const Entry = (props) => {
     }
 
     const elements = []
-    const keys = sortByNameWithPriority(Object.keys(props.data), ["name", "meaning"])
+    const keys = sortByNameWithPriority(Object.keys(props.data), ["name", "meaning", "sample"])
 
 
     for (let key of keys) {
