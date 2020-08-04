@@ -17,6 +17,7 @@ const Dashboard = (props) => {
     const [dataTopicQ23Vocabulary, updateTopicQ23VocabularyData] = useState([]);
     const [dataExpressions, updateExpressionsData] = useState([]);
     const [dataRandomWords, updateRandomWordsData] = useState([]);
+    const [dataConversationExpressions, updateConversationExpressionsData] = useState([]);
 
     function reloadMurphy() {
         axios.get("/murphy")
@@ -48,6 +49,14 @@ const Dashboard = (props) => {
             .then(response => {
                 const value = response.data
                 updateInterviewQuestionsData(value)
+            })
+    }
+
+    function reloadConversationExpressions() {
+        axios.get("/conversation_expressions")
+            .then(response => {
+                const value = response.data
+                updateConversationExpressionsData(value)
             })
     }
 
@@ -102,6 +111,7 @@ const Dashboard = (props) => {
         reloadTopicQ23();
         reloadRandomWords();
         reloadInterview();
+        reloadConversationExpressions();
     }
 
     const refreshButton = <button onClick={() => requestNewData()}>Refresh</button>
@@ -116,6 +126,7 @@ const Dashboard = (props) => {
     const expressions = <EntriesList data={dataExpressions} highlightAlgo="0"/>
     const randomWords = <EntriesList data={dataRandomWords} formatUrl="true"/>
     const interviewQuestions = <EntriesList data={dataInterviewQuestions}/>
+    const conversationExpressions = <EntriesList data={dataConversationExpressions} formatUrl="true"/>
 
     return (
         <div className="Dashboard">
@@ -138,6 +149,9 @@ const Dashboard = (props) => {
                 <div id="interview">
                     <p onClick={() => reloadInterview()}>Interview</p>
                     {interviewQuestions}</div>
+                <div id="conversation_expressions">
+                    <p onClick={() => reloadConversationExpressions()}>Conversation expression</p>
+                    {conversationExpressions}</div>
             </div>
             <div id="col2">
                 <div id="topic_q1">
